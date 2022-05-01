@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app
+  namespace: kar-demo-ns
+spec:
+  selector:
+    matchLabels:
+      app: demo-app
+  template:
+    metadata:
+      labels:
+        app: demo-app
+    spec:
+      containers:
+      - name: server
+        image: panny0109/kar-demo:1.1
+        ports:
+        - containerPort: 8082
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-app-service
+  namespace: kar-demo-ns
+spec:
+  type: LoadBalancer
+  selector:
+    app: demo-app
+  ports:
+    - name: http
+      port: 2323
+      targetPort: 8082

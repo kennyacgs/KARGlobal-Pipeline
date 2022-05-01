@@ -1,0 +1,40 @@
+pipeline {
+	agent any
+ 
+	stages{
+		stage('Git checkout'){
+			steps {
+				echo 'Cloning SCM repo'
+				git credentialsId: 'GitHub_Token', url: 'https://github.com/panny0109/KARGlobal-Demo.git'	    
+			}
+		}
+
+		stage('Terraform Destroy'){
+			steps{
+				dir('linode'){
+					sh "terraform init"
+					sh 'terraform plan -destroy'
+					//sh 'terraform plan'
+				}
+			}
+		}		
+		stage('TF-Destroy Approval'){
+			steps{
+				script{
+					echo 'User approval required'
+					def userInput = input message: 'Approve to destroy changes', ok: 'Yes', submitter: 'admin'
+				}
+			}
+		}  
+		stage('TF Destroying') {
+			steps {
+				script{
+					dir('linode'){
+						sh "terraform destroy --auto-approve"	
+					}
+				}
+     			}
+		}
+
+	} //stages
+} //pipeline

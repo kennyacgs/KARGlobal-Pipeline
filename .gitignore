@@ -1,0 +1,16 @@
+# Ignore system files MacOs
+.DS_Store
+
+#Local .terraform dir
+**/.terraform/*
+
+# Terraform state
+*.tfstate
+*.tfstate.*
+
+## Terraform CLI config files
+.terraformc
+terraform.rc
+
+
+

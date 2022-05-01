@@ -1,0 +1,37 @@
+pipeline {
+	agent any
+		environment { 
+			DOCKERHUB_CREDENTIALS= credentials('DockerHub_Token') 
+		}  
+        
+	stages{
+	
+	  	stage('Git clone'){
+			steps {
+				echo 'Cloning SCM repo'
+				git credentialsId: 'GitHub_Token', url: 'https://github.com/panny0109/KARGlobal-Demo.git'	    
+			}
+		}
+		stage('DockerHub Login') {         
+      			steps{                            
+				sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+				echo 'Login Completed'                
+      			}           
+   		 }  
+  		stage('Deploy App'){
+	      		steps{ 
+      		  		script{
+					dir('k8s_deployment'){
+  	  					echo "Initiating k8s deployment"
+						withKubeConfig([credentialsId: 'lke_cluster_credentials', 
+							serverUrl: env.CLUSTER_URL]){
+							//sh "kubectl get node"
+							sh 'kubectl apply -f namespace.yaml'
+							sh 'kubectl apply -f demo-app.yaml'
+	  					}
+        				}
+				}
+      			}
+    		}
+	} //stages 
+} //pipeline

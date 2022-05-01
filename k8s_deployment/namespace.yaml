@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: kar-demo-ns
+  labels:
+    name: kar-demo-ns
