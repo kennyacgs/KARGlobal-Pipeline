@@ -43,7 +43,7 @@ func (s *MyServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 var allPerm []string
 func PermutationHandler(rw http.ResponseWriter, r *http.Request){
   params:=mux.Vars(r)
-  number:=params["number"]
+  number:="12345"
   input:=[]rune(number)
   allPerm=[]string{}
   perm(input, 0, len(input)-1)
