@@ -6,18 +6,29 @@ pipeline {
         
 	stages{
 	
-	  	stage('Git clone'){
+	  	stage('Git checkout'){
 			steps {
 				echo 'Cloning SCM repo'
 				git credentialsId: 'GitHub_Token', url: 'https://github.com/panny0109/KARGlobal-Demo.git'	    
 			}
-		}
+		}    
 		stage('DockerHub Login') {         
       			steps{                            
 				sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
 				echo 'Login Completed'                
       			}           
-   		 }  
+   		 } 
+		stage('Docker Build and push'){
+      			steps{
+				sh 'docker build -t panny0109/kar-demo:1.0 .'
+				sh 'docker push panny0109/kar-demo:1.0'
+			}
+    		}	
+		stage{
+			steps('Cleanup'){
+				sh 'docker rmi panny0109/kar-demo:1.0'
+			}
+		}
   		stage('Deploy App'){
 	      		steps{ 
       		  		script{
@@ -33,5 +44,6 @@ pipeline {
 				}
       			}
     		}
+		
 	} //stages 
 } //pipeline
