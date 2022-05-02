@@ -11,23 +11,11 @@ pipeline {
 				git credentialsId: 'GitHub_Token', url: 'https://github.com/panny0109/KARGlobal-Demo.git'	    
 			}
 		}
-		stage('DockerHub Login') {         
-      			steps{  
-				sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-				echo 'Login Completed'                
-      			}           
-   		 }      
-		stage('Docker Build and push'){
-      			steps{
-				sh 'docker build -t panny0109/kar-demo:1.1 .'
-				sh 'docker push panny0109/kar-demo:1.1'
-			}
-    		}	
 		
 		stage('Terraform init & plan'){
 			steps{
 				dir('linode'){
-					sh 'terraform init -reconfigure'
+					sh 'terraform init'
 					sh 'terraform plan'
 				}
 			}
@@ -62,9 +50,5 @@ pipeline {
 		}
 
 	} //stages
-	post{
-              always {  
-                sh 'docker logout'           
-              }      
-        }  
+ 
 } //pipeline
