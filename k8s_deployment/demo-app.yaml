@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: panny0109/kar-demo
+        image: panny0109/kar-demo:1.0
         ports:
         - containerPort: 8082
         resources:
