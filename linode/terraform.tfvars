@@ -2,5 +2,5 @@ k8s_version = "1.23"
 label =  "demo"
 region = "us-central"
 tags = ["demo"]
-token = "a36eb1561e562bc78c4d4331d8f6fafcce529b77dc056a002c4b7356ad0aa277"
+token = "ef08d7ae54812233191a2352fcb0eb624dfde5ac4edf2af63b77754f5b30253d"
 
