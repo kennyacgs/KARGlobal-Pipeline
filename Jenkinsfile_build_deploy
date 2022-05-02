@@ -24,11 +24,6 @@ pipeline {
 				sh 'docker push panny0109/kar-demo:1.0'
 			}
     		}	
-		stage('Cleanup') {
-			steps{
-				sh 'docker rmi panny0109/kar-demo:1.0'
-			}
-		}
   		stage('Deploy App'){
 	      		steps{ 
       		  		script{
